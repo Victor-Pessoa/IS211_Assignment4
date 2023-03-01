@@ -1,117 +1,114 @@
 import random
 import time
 
-def sequential_search(lst, x):
+def sequential_search(lst, item):
     start_time = time.time()
     pos = 0
     found = False
 
     while pos < len(lst) and not found:
-        if lst[pos] == x:
+        if lst[pos] == item:
             found = True
         else:
-            pos = pos + 1
+            pos = pos+1
 
-    elapsed_time = time.time() - start_time
-    return found, elapsed_time
+    end_time = time.time()
+    return found, end_time-start_time
 
-def ordered_sequential_search(lst, x):
+
+def ordered_sequential_search(lst, item):
+    lst.sort()
     start_time = time.time()
     pos = 0
     found = False
     stop = False
 
     while pos < len(lst) and not found and not stop:
-        if lst[pos] == x:
+        if lst[pos] == item:
             found = True
         else:
-            if lst[pos] > x:
+            if lst[pos] > item:
                 stop = True
             else:
                 pos = pos+1
 
-    elapsed_time = time.time() - start_time
-    return found, elapsed_time
+    end_time = time.time()
+    return found, end_time-start_time
 
-def binary_search_iterative(lst, x):
+
+def binary_search_iterative(lst, item):
+    lst.sort()
     start_time = time.time()
     first = 0
-    last = len(lst) - 1
+    last = len(lst)-1
     found = False
 
     while first <= last and not found:
-        midpoint = (first + last) // 2
-        if lst[midpoint] == x:
+        midpoint = (first + last)//2
+        if lst[midpoint] == item:
             found = True
         else:
-            if x < lst[midpoint]:
-                last = midpoint - 1
+            if item < lst[midpoint]:
+                last = midpoint-1
             else:
-                first = midpoint + 1
+                first = midpoint+1
 
-    elapsed_time = time.time() - start_time
-    return found, elapsed_time
+    end_time = time.time()
+    return found, end_time-start_time
 
-def binary_search_recursive(lst, x):
+
+def binary_search_recursive(lst, item):
+    lst.sort()
     start_time = time.time()
 
     if len(lst) == 0:
-        elapsed_time = time.time() - start_time
-        return False, elapsed_time
+        end_time = time.time()
+        return False, end_time-start_time
     else:
-        midpoint = len(lst) // 2
-        if lst[midpoint] == x:
-            elapsed_time = time.time() - start_time
-            return True, elapsed_time
+        midpoint = len(lst)//2
+        if lst[midpoint]==item:
+            end_time = time.time()
+            return True, end_time-start_time
         else:
-            if x < lst[midpoint]:
-                elapsed_time = time.time() - start_time
-                return binary_search_recursive(lst[:midpoint], x)[0], elapsed_time
+            if item < lst[midpoint]:
+                end_time = time.time()
+                return binary_search_recursive(lst[:midpoint], item)[0], end_time-start_time
             else:
-                elapsed_time = time.time() - start_time
-                return binary_search_recursive(lst[midpoint + 1:], x)[0], elapsed_time
+                end_time = time.time()
+                return binary_search_recursive(lst[midpoint+1:], item)[0], end_time-start_time
 
-def insertion_sort(lst):
-    start_time = time.time()
-    for i in range(1, len(lst)):
-        current_val = lst[i]
-        position = i
 
-        while position > 0 and lst[position - 1] > current_val:
-            lst[position] = lst[position - 1]
-            position = position - 1
+def generate_lists():
+    lists = {}
+    for size in [500, 1000, 10000]:
+        for i in range(100):
+            lst = random.sample(range(1, size+1), size)
+            lists[f'{size}_{i}'] = lst
+    return lists
 
-        lst[position] = current_val
 
-    elapsed_time = time.time() - start_time
-    return lst, elapsed_time
+def main():
+    lists = generate_lists()
+    for size in [500, 1000, 10000]:
+        seq_sum = ord_seq_sum = bin_it_sum = bin_rec_sum = 0
+        for i in range(100):
+            lst = lists[f'{size}_{i}']
+            result, time_taken = sequential_search(lst, -1)
+            seq_sum += time_taken
 
-def shell_sort(lst):
-    start_time = time.time()
-    sublistcount = len(lst) // 2
+            result, time_taken = ordered_sequential_search(lst, -1)
+            ord_seq_sum += time_taken
 
-    while sublistcount > 0:
-        for startpos in range(sublistcount):
-            gap_insertion_sort(lst, startpos, sublistcount)
+            result, time_taken = binary_search_iterative(lst, -1)
+            bin_it_sum += time_taken
 
-        sublistcount = sublistcount // 2
+            result, time_taken = binary_search_recursive(lst, -1)
+            bin_rec_sum += time_taken
 
-    elapsed_time = time.time() - start_time
-    return lst, elapsed_time
+        print(f"Sequential Search took {total_time_seq / 100:.7f} seconds to run, on average")
+        print(f"Ordered Sequential Search took {total_time_ord_seq / 100:.7f} seconds to run, on average")
+        print(f"Binary Search (Iterative) took {total_time_bin_iter / 100:.7f} seconds to run, on average")
+        print(f"Binary Search (Recursive) took {total_time_bin_rec / 100:.7f} seconds to run, on average")
 
-def gap_insertion_sort(lst, start, gap):
-    for i in range(start + gap, len(lst), gap):
-        current_val = lst[i]
-        position = i
-
-        while position >= gap and lst[position - gap] > current_val:
-            lst[position] = lst[position - gap]
-            position = position - gap
-
-        lst[position] = current_val
-
-def python_sort(lst):
-    start_time = time.time()
-    lst.sort()
-    elapsed_time = time.time() - start_time
-    return
+    if __name__ == "__main__":
+        main()
