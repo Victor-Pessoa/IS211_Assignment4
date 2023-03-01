@@ -1,114 +1,117 @@
-import time
 import random
+import time
 
-def get_me_random_list(n):
-    """Generate list of n elements in random order
-    
-    :params: n: Number of elements in the list
-    :returns: A list with n elements in random order
-    """
-    # Create a list of integers from 0 to n-1
-    a_list = list(range(n))
-    # Shuffle the list randomly
-    random.shuffle(a_list)
-    return a_list
-
-def sequential_search(a_list, item):
-    """
-    Sequential search function
-    
-    :params: a_list: List to be searched
-             item: Element to search for
-    :returns: True if item is found in the list, False otherwise
-    """
+def sequential_search(lst, x):
+    start_time = time.time()
     pos = 0
     found = False
 
-    while pos < len(a_list) and not found:
-        if a_list[pos] == item:
+    while pos < len(lst) and not found:
+        if lst[pos] == x:
             found = True
         else:
             pos = pos + 1
 
-    return found
+    elapsed_time = time.time() - start_time
+    return found, elapsed_time
 
-def ordered_sequential_search(a_list, item):
-    """
-    Ordered sequential search function
-    
-    :params: a_list: List to be searched (must be sorted in ascending order)
-             item: Element to search for
-    :returns: True if item is found in the list, False otherwise
-    """
+def ordered_sequential_search(lst, x):
+    start_time = time.time()
     pos = 0
     found = False
     stop = False
-    
-    while pos < len(a_list) and not found and not stop:
-        if a_list[pos] == item:
+
+    while pos < len(lst) and not found and not stop:
+        if lst[pos] == x:
             found = True
         else:
-            if a_list[pos] > item:
+            if lst[pos] > x:
                 stop = True
             else:
-                pos = pos + 1
+                pos = pos+1
 
-    return found
+    elapsed_time = time.time() - start_time
+    return found, elapsed_time
 
-def binary_search_iterative(a_list,item):
-    """
-    Iterative binary search function
-    
-    :params: a_list: List to be searched (must be sorted in ascending order)
-             item: Element to search for
-    :returns: True if item is found in the list, False otherwise
-    """
+def binary_search_iterative(lst, x):
+    start_time = time.time()
     first = 0
-    last = len(a_list) - 1
+    last = len(lst) - 1
     found = False
-    
+
     while first <= last and not found:
         midpoint = (first + last) // 2
-        if a_list[midpoint] == item:
+        if lst[midpoint] == x:
             found = True
         else:
-            if item < a_list[midpoint]:
+            if x < lst[midpoint]:
                 last = midpoint - 1
             else:
                 first = midpoint + 1
 
-    return found
+    elapsed_time = time.time() - start_time
+    return found, elapsed_time
 
-def binary_search_recursive(a_list,item):
-    """
-    Recursive binary search function
-    
-    :params: a_list: List to be searched (must be sorted in ascending order)
-             item: Element to search for
-    :returns: True if item is found in the list, False otherwise
-    """
-    if len(a_list) == 0:
-        return False
+def binary_search_recursive(lst, x):
+    start_time = time.time()
+
+    if len(lst) == 0:
+        elapsed_time = time.time() - start_time
+        return False, elapsed_time
     else:
-        midpoint = len(a_list) // 2
-        if a_list[midpoint] == item:
-            return True
+        midpoint = len(lst) // 2
+        if lst[midpoint] == x:
+            elapsed_time = time.time() - start_time
+            return True, elapsed_time
         else:
-            if item < a_list[midpoint]:
-                return binary_search_recursive(a_list[:midpoint], item)
+            if x < lst[midpoint]:
+                elapsed_time = time.time() - start_time
+                return binary_search_recursive(lst[:midpoint], x)[0], elapsed_time
             else:
-                return binary_search_recursive(a_list[midpoint + 1:], item)
+                elapsed_time = time.time() - start_time
+                return binary_search_recursive(lst[midpoint + 1:], x)[0], elapsed_time
 
-if __name__ == "__main__":
-    # Define the sizes of the random lists to be generated
-    sizes = [500, 1000, 10000]
+def insertion_sort(lst):
+    start_time = time.time()
+    for i in range(1, len(lst)):
+        current_val = lst[i]
+        position = i
 
-    for size in sizes:
-        # Initialize the total time for each search algorithm
-        total_time_seq = 0
-        total_time_ord_seq = 0
-        total_time_bin_iter = 0
-        total_time_bin_rec = 0
-        
-        # Generate 100 random lists of the current size and search for -1 in each list
-        for i in range(100):
+        while position > 0 and lst[position - 1] > current_val:
+            lst[position] = lst[position - 1]
+            position = position - 1
+
+        lst[position] = current_val
+
+    elapsed_time = time.time() - start_time
+    return lst, elapsed_time
+
+def shell_sort(lst):
+    start_time = time.time()
+    sublistcount = len(lst) // 2
+
+    while sublistcount > 0:
+        for startpos in range(sublistcount):
+            gap_insertion_sort(lst, startpos, sublistcount)
+
+        sublistcount = sublistcount // 2
+
+    elapsed_time = time.time() - start_time
+    return lst, elapsed_time
+
+def gap_insertion_sort(lst, start, gap):
+    for i in range(start + gap, len(lst), gap):
+        current_val = lst[i]
+        position = i
+
+        while position >= gap and lst[position - gap] > current_val:
+            lst[position] = lst[position - gap]
+            position = position - gap
+
+        lst[position] = current_val
+
+def python_sort(lst):
+    start_time = time.time()
+    lst.sort()
+    elapsed_time = time.time() - start_time
+    return
