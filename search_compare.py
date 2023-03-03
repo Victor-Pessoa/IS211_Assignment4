@@ -90,10 +90,14 @@ def main():
         for size in [500, 1000, 10000]:
             ele = -1
             print(f"List size: {size}")
-            print("Sequential Search: ", sequential_search(lst, ele))
-            print("Ordered Sequential Search: ", ordered_sequential_search(lst, ele))
-            print("Binary Search Iterative: ", binary_search_iterative(lst, ele))
-            print("Binary Search Recursive: ", binary_search_recursive(lst, ele))
+            found, time_taken = sequential_search(lst, ele)
+            print(f"Sequential Search took {time_taken:10.7f} seconds to run, on average")
+            found, time_taken = ordered_sequential_search(lst, ele)
+            print(f"Ordered Sequential Search took {time_taken:10.7f} seconds to run, on average")
+            found, time_taken = binary_search_iterative(lst, ele)
+            print(f"Binary Search Iterative took {time_taken:10.7f} seconds to run, on average")
+            found, time_taken = binary_search_recursive(lst, ele)
+            print(f"Binary Search Recursive took {time_taken:10.7f} seconds to run, on average")
 
 
 if __name__ == '__main__':
