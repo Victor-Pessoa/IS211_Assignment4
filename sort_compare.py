@@ -2,7 +2,11 @@ import random
 import time
 
 def get_me_random_list(n):
-
+    """Generate list of n elements in random order
+    
+    :params: n: Number of elements in the list
+    :returns: A list with n elements in random order
+    """
     a_list = list(range(n))
     random.shuffle(a_list)
     return a_list
@@ -81,6 +85,6 @@ if __name__ == "__main__":
         avg_time_python = total_time_python / 100
 
         print(f"For a list of {the_size} elements:")
-        print(f"Insertion sort took {avg_time_insertion:.7f} seconds to run, on average")
-        print(f"Shell sort took {avg_time_shell:.7f} seconds to run, on average")
-        print(f"Python sort took {avg_time_python:.7f} seconds to run, on average")
+        print(f"Insertion sort took {avg_time_insertion:10.7f} seconds to run, on average")
+        print(f"Shell sort took {avg_time_shell:10.7f} seconds to run, on average")
+        print(f"Python sort took {avg_time_python:10.7f} seconds to run, on average")  
