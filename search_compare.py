@@ -90,14 +90,34 @@ def main():
         for size in [500, 1000, 10000]:
             ele = -1
             print(f"List size: {size}")
-            found, time_taken = sequential_search(lst, ele)
-            print(f"Sequential Search took {time_taken:10.7f} seconds to run, on average")
-            found, time_taken = ordered_sequential_search(lst, ele)
-            print(f"Ordered Sequential Search took {time_taken:10.7f} seconds to run, on average")
-            found, time_taken = binary_search_iterative(lst, ele)
-            print(f"Binary Search Iterative took {time_taken:10.7f} seconds to run, on average")
-            found, time_taken = binary_search_recursive(lst, ele)
-            print(f"Binary Search Recursive took {time_taken:10.7f} seconds to run, on average")
+            
+            total_time = 0
+            for j in range(100):
+                found, time_taken = sequential_search(lst, ele)
+                total_time += time_taken
+            avg_time = total_time / 100
+            print("Sequential Search took %10.7f seconds to run, on average" % avg_time)
+            
+            total_time = 0
+            for j in range(100):
+                found, time_taken = ordered_sequential_search(lst, ele)
+                total_time += time_taken
+            avg_time = total_time / 100
+            print("Ordered Sequential Search took %10.7f seconds to run, on average" % avg_time)
+            
+            total_time = 0
+            for j in range(100):
+                found, time_taken = binary_search_iterative(lst, ele)
+                total_time += time_taken
+            avg_time = total_time / 100
+            print("Binary Search Iterative took %10.7f seconds to run, on average" % avg_time)
+            
+            total_time = 0
+            for j in range(100):
+                found, time_taken = binary_search_recursive(lst, ele)
+                total_time += time_taken
+            avg_time = total_time / 100
+            print("Binary Search Recursive took %10.7f seconds to run, on average" % avg_time)
 
 
 if __name__ == '__main__':
